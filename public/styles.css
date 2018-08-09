@@ -1,0 +1,32 @@
+div.card button.card-button {
+    cursor: pointer;
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    opacity: .5;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms;
+}
+
+div.card button.card-button:hover {
+    opacity: 1
+}
+
+div.card button.pen {
+    position:absolute; 
+    right: 35px; 
+    top: 10px
+}
+
+div.card button.bomb {
+    position:absolute; 
+    right: 5px; 
+    top: 10px
+}

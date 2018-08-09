@@ -1,0 +1,34 @@
+doctype html
+html
+  include includes/head.pug
+  body
+    include includes/navbar.pug
+    .container
+      if data[0]===undefined
+        .jumbotron
+          h1.display-4 But no body came.
+          p.lead Starting posting 
+            a(href='./post') here
+            | !
+      else
+        each item, index in data
+          if index%3 == 0
+            .card-deck.mb-3
+              each item in data.slice(index, index+3)
+                .card(data-id=item.id)
+                  if item.img
+                    img.card-img-top(src=item.img)
+                  h5.card-header
+                      div(title='Title')= item.title
+                      div
+                        button.bomb.card-button(name='delete' type='button' title="Delete") 💣
+                        button.pen.card-button(name='edit' type='button' title="Edit") 🖊
+                  .card-body
+                    if item.subtitle
+                      strong.card-title.mb-1= item.subtitle
+                    each paragraph in item.text.split('\n')
+                      p.card-text= paragraph
+                    //-p.card-text= `ID: ${item.id}`
+    
+    include includes/scripts.pug
+    script(src='/js/index.js')

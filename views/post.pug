@@ -1,0 +1,28 @@
+doctype html
+html
+  include includes/head.pug
+  body
+    include includes/navbar.pug
+    .container
+      form#form(method='post')
+        .row
+          .form-group.col-md
+            input#title.form-control(type='text' name='title' placeholder="Title" value=failedContent?failedContent.title:undefined)
+            small#titleCount 50 left
+          .form-group.col-md
+            input#subtitle.form-control(type='text' name='subtitle' placeholder="Subtitle" value=failedContent?failedContent.subtitle:undefined)
+            small#subtitleCount 50 left
+        .form-group
+          textarea#text.form-control(name='text' placeholder="What is in your mind?" rows=5)= failedContent?failedContent.text:undefined
+          small#textCount 500 left
+        button.btn.btn-primary.btn-lg.btn-block(type="submit") Submit
+      p 
+        small Maybe this can be remade into using AJAX or with SweetAlert2 🤔
+
+    include includes/scripts.pug    
+    if posted
+      script swal({type: "success", title: "Post success!", timer: 1500, showConfirmButton: false});
+    if failed
+      script swal({type: "warning", title: "Post failed!", timer: 1500, showConfirmButton: false});
+    // ^ upgrade to ajax later?
+    script(src='/js/post.js')
