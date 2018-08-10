@@ -92,6 +92,13 @@ console.log("Connected to database!");
         });
     });
 
+    app.get('/about', (req, res)=>{
+        res.render('about.pug', {
+            dir: 'about'
+        });
+        console.log("Someone visited the about page.");
+    });
+
     app.get('/*', (req, res)=>{
         res.redirect('/');
     });
