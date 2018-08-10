@@ -1,7 +1,6 @@
 const express = require('express');
 const { Client } = require('pg');
 const bodyParser = require('body-parser');
-// const config = require('./config.js');
 
 const app = express();
 const con = new Client({
