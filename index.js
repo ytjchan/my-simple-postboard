@@ -1,10 +1,13 @@
 const express = require('express');
-const mysql = require('mysql');
+const { Client } = require('pg');
 const bodyParser = require('body-parser');
-const config = require('./config.js');
+// const config = require('./config.js');
 
 const app = express();
-const con = mysql.createConnection(config);
+const con = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+});
 
 app.set('view engine', 'pug');
 app.set('views', './views');
@@ -14,16 +17,15 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
     extended: true
 })); 
 
-con.connect((err)=>{
-    if (err) throw err;
-    console.log("Connected to database!");
+con.connect();
+console.log("Connected to database!");
     
     app.get('/', (req, res)=>{
-        con.query('SELECT * FROM basic ORDER BY time DESC', (err, rows, fields)=>{
+        con.query('SELECT * FROM basic ORDER BY time DESC', (err, results)=>{
             if (err) throw err;
             res.render('index.pug', {
                 dir: 'index',
-                data: rows,
+                data: results.rows,
             });
             console.log("Someone visited the index page.");
         });
@@ -32,12 +34,12 @@ con.connect((err)=>{
     app.delete('/', (req, res)=>{
         console.log("Delete request received.");
         console.log(req.body);
-        let sql = `DELETE FROM basic WHERE id = ${con.escape(req.body.id)}`
+        let sql = `DELETE FROM basic WHERE id = $1`
         console.log(sql);
-        con.query(sql, (err, results, fields)=>{
+        con.query(sql, [req.body.id], (err, results)=>{
             if (err) {
                 res.sendStatus(500);
-            } else if (results.affectedRows===0) {
+            } else if (results.rowCount===0) {
                 res.sendStatus(410);
             } else {
                 res.sendStatus(204);
@@ -48,11 +50,11 @@ con.connect((err)=>{
     app.put('/', (req, res)=>{
         console.log("Edit request received.");
         console.log(req.body);
-        let sql = 'UPDATE basic SET ? WHERE id= ?';
-        con.query(sql, [req.body, req.body.id],(err, results, fields)=>{
+        let sql = 'UPDATE basic SET title=$1, subtitle=$2, text=$3 WHERE id= $4'; // not best for more/variable field number, but works for now
+        con.query(sql, [req.body.title, req.body.subtitle, req.body.text, req.body.id], (err, results)=>{
             if (err) {
                 res.sendStatus(500);
-            } else if (results.affectedRows===0) {
+            } else if (results.rowCount===0) {
                 res.sendStatus(410);
             } else {
                 res.sendStatus(204);
@@ -70,9 +72,9 @@ con.connect((err)=>{
     app.post('/post', (req, res)=>{
         console.log("Post received.");
         console.log(req.body);
-        let sql = `INSERT INTO basic (${con.escape(Object.keys(req.body)).replace(new RegExp('\'', 'g'),'')}) VALUES (${con.escape(Object.values(req.body))})`
+        let sql = 'INSERT INTO basic VALUES ($1, $2, $3)' // currently only 3 fields
         console.log(sql);
-        con.query(sql, (err, rows, fields)=>{
+        con.query(sql, [req.body.title, req.body.subtitle, req.body.text], (err, results)=>{
             if (err) {
                 res.status(400);
                 res.render('post.pug', {
@@ -94,7 +96,6 @@ con.connect((err)=>{
     app.get('/*', (req, res)=>{
         res.redirect('/');
     });
-});
 
 port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`My Simple Postboard listening on port ${port}!`))

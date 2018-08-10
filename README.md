@@ -5,6 +5,7 @@ A postboard website with a client/server model which supports [CRUD operations](
 - [ ] TODO: Support for emoji posts.
 - [ ] TOOD: Post using AJAX instead of traditional forms for better script control?
 - [ ] TOOD: Make a preview picture.
+- [x] Setup to deploy on Heroku.
 
 ## Prerequisites
 
@@ -61,5 +62,6 @@ There are imported in [`head.pug`](./views/includes/head.pug) and [`scripts.pug`
 
 - [Express](http://expressjs.com/) - a Node framework for setting up the web server.
   - [body-parser](https://www.npmjs.com/package/body-parser) - a Express.js middleware for interpreting HTTP request bodies.
-- [mysqljs](https://github.com/mysqljs/mysql) - a Node module for connecting to the MySQL database.
+- ~~[mysqljs](https://github.com/mysqljs/mysql) - a Node module for connecting to the MySQL database.~~
+- [pg](https://node-postgres.com/) - a Node module for connecting to the Postgre database on Heroku
 - [Pug](https://pugjs.org/) - a template engine and language to dynamically generate HTML web pages.

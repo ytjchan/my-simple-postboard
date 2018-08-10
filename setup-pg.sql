@@ -1,0 +1,1 @@
+create table basic (title varchar(50) default null, subtitle varchar(50) default null, text varchar(500) default null, author varchar(20) default null, image varchar(100) default null, cardtype varchar(50) default null, id serial, time timestamp NOT NULL DEFAULT now(), PRIMARY KEY(id));
