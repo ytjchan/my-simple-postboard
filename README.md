@@ -6,47 +6,30 @@ A postboard website with a client/server model which supports [CRUD operations](
 - [ ] TOOD: Post using AJAX instead of traditional forms for better script control?
 - [ ] TOOD: Make a preview picture.
 - [x] Setup to deploy on Heroku.
+- [x] Quick guide to deploy on Heroku.
 
 ## Prerequisites
 
 - [Node v8.10.0 or higher](https://nodejs.org/)
-- [MySQL 5.7](https://www.mysql.com/)
+- ~~[MySQL 5.7](https://www.mysql.com/)~~
+- [PostgreSQL](https://www.postgresql.org/)
+- [Heroku](https://www.heroku.com/)
 
 ## Usage
 
-### Installation
+If deployed with MySQL, see [this branch](https://github.com/ytjchan/my-simple-postboard/tree/master).
 
-In project directory, call the following node command to install the necessary dependencies:
+### ~~Installation~~
 
-```sh
-node install
-```
+### ~~Execution~~
 
-Create `config.js` in the project directory with the following content:
+### ✔ Deployment
 
-```js
-module.exports = {
-    host: 'localhost',
-    user: 'USERNAME HERE', // put your username here
-    password: 'PASSWORD HERE', // put your password here
-    database: 'my-simple-postboard'
-};
-```
+Since it's set to deploy on [Heroku](https://www.heroku.com/), installation of node modules can be done automatically.
 
-Run the [`setup.sql`](./setup.sql) in MySQL to prepare the necessary tables.
+To deploy, create a new app on Heroku. Then connect [Heroku Postgres database](https://elements.heroku.com/addons/heroku-postgresql) to the app. Connect to the database using `psql` and create a table using the line in [setup-pg.sql](./setup-pg.sql).
 
-### Execution
-
-In project directory, call the following node command to start the server:
-
-```sh
-node index.js
-# Output:
-# My Simple Postboard listening on port 3000! (or another port if specified)
-# Connected to database!
-```
-
-Navigate to `localhost:3000` (or a corresponding port) to visit the postboard.
+Lastly add the app's repository to your git remote and push there. _Voila!_ The app detects the [Procfile](./Procfile) and deploys it automatically, thanks Heroku!
 
 ## Technologies used
 
